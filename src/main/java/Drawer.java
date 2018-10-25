@@ -2,6 +2,8 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.ApplicationFrame;
@@ -24,7 +26,7 @@ public class Drawer extends ApplicationFrame {
             series.add(xArray[i], yArray[i]);
         }
 
-        XYSeriesCollection data = new XYSeriesCollection(series);
+        XYDataset data = new XYSeriesCollection(series);
         JFreeChart chart = ChartFactory.createXYLineChart(
                 title,
                 xLabel,
@@ -38,6 +40,11 @@ public class Drawer extends ApplicationFrame {
 
         ChartPanel panel = new ChartPanel(chart);
         panel.setPreferredSize(new Dimension(640, 480));
+        XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer( );
+        renderer.setSeriesLinesVisible(0, false);
+        renderer.setBaseLinesVisible(true);
+        renderer.setSeriesStroke(0, new BasicStroke(2.0f));
+        chart.getXYPlot().setRenderer(renderer);
         setContentPane(panel);
     }
 
