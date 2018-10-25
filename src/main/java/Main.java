@@ -109,28 +109,28 @@ public class Main {
             t[i] = t[i - 1] + dt;
 
             double da11 = dt * a1(a1Array[i - 1], a2Array[i - 1], p1Array[i - 1], p2Array[i - 1]);
-            double da12 = dt * a1(a1Array[i - 1] + da11 / 2.0, a2Array[i - 1] + da11 / 2.0, p1Array[i - 1] + da11 / 2.0, p2Array[i - 1] + da11 / 2.0);
-            double da13 = dt * a1(a1Array[i - 1] + da12 / 2.0, a2Array[i - 1] + da12 / 2.0, p1Array[i - 1] + da12 / 2.0, p2Array[i - 1] + da12 / 2.0);
-            double da14 = dt * a1(a1Array[i - 1] + da13,       a2Array[i - 1] + da13, p1Array[i - 1] + da13, p2Array[i - 1] + da13);
-            a1Array[i] = a1Array[i - 1] + (da11 + 2.0 * (da12 + da13) + da14) / 6.0;
-
             double da21 = dt * a2(a1Array[i - 1], a2Array[i - 1], p1Array[i - 1], p2Array[i - 1]);
-            double da22 = dt * a2(a1Array[i - 1] + da21 / 2.0, a2Array[i - 1] + da21 / 2.0, p1Array[i - 1] + da21 / 2.0, p2Array[i - 1] + da21 / 2.0);
-            double da23 = dt * a2(a1Array[i - 1] + da22 / 2.0 ,a2Array[i - 1] + da22 / 2.0, p1Array[i - 1] + da22 / 2.0, p2Array[i - 1] + da22 / 2.0);
-            double da24 = dt * a2(a1Array[i - 1] + da23, a2Array[i - 1] + da23,p1Array[i - 1] + da23, p2Array[i - 1] + da23);
-            a2Array[i] = a2Array[i - 1] + (da21 + 2.0 * (da22 + da23) + da24) / 6.0;
-            System.out.println(a2Array[i] + " " + (da21 + 2.0 * (da22 + da23) + da24));
-
             double dp11 = dt * p1(a1Array[i - 1], a2Array[i - 1], p1Array[i - 1], p2Array[i - 1]);
-            double dp12 = dt * p1(a1Array[i - 1] + dp11 / 2.0, a2Array[i - 1] + dp11 / 2.0, p1Array[i - 1] + dp11 / 2.0, p2Array[i - 1]+ dp11 / 2.0);
-            double dp13 = dt * p1(a1Array[i - 1] + dp12 / 2.0, a2Array[i - 1] + dp12 / 2.0, p1Array[i - 1] + dp12 / 2.0, p2Array[i - 1] + dp12 / 2.0);
-            double dp14 = dt * p1(a1Array[i - 1] + dp13, a2Array[i - 1] + dp13, p1Array[i - 1] + dp13,p2Array[i - 1] + dp13);
-            p1Array[i] = p1Array[i - 1] + (dp11 + 2.0 * (dp12 + dp13) + dp14) / 6.0;
-
             double dp21 = dt * p2(a1Array[i - 1], a2Array[i - 1], p1Array[i - 1], p2Array[i - 1]);
-            double dp22 = dt * p2(a1Array[i - 1] + dp21 / 2.0, a2Array[i - 1] + dp21 / 2.0, p1Array[i - 1] + dp21 / 2.0, p2Array[i - 1] + dp21 / 2.0);
-            double dp23 = dt * p2(a1Array[i - 1] + dp22 / 2.0, a2Array[i - 1] + dp22 / 2.0, p1Array[i - 1] + dp22 / 2.0, p2Array[i - 1] + dp22 / 2.0);
-            double dp24 = dt * p2(a1Array[i - 1] + dp23, a2Array[i - 1] + dp23, p1Array[i - 1] + dp23, p2Array[i - 1] + dp23);
+
+            double da12 = dt * a1(a1Array[i - 1] + da11 / 2.0, a2Array[i - 1] + da21 / 2.0, p1Array[i - 1] + dp11 / 2.0, p2Array[i - 1] + dp21 / 2.0);
+            double da22 = dt * a2(a1Array[i - 1] + da11 / 2.0, a2Array[i - 1] + da21 / 2.0, p1Array[i - 1] + dp11 / 2.0, p2Array[i - 1] + dp21 / 2.0);
+            double dp12 = dt * p1(a1Array[i - 1] + da11 / 2.0, a2Array[i - 1] + da21 / 2.0, p1Array[i - 1] + dp11 / 2.0, p2Array[i - 1] + dp21 / 2.0);
+            double dp22 = dt * p2(a1Array[i - 1] + da21 / 2.0, a2Array[i - 1] + da21 / 2.0, p1Array[i - 1] + dp11 / 2.0, p2Array[i - 1] + dp21 / 2.0);
+
+            double da13 = dt * a1(a1Array[i - 1] + da12 / 2.0, a2Array[i - 1] + da22 / 2.0, p1Array[i - 1] + dp12 / 2.0, p2Array[i - 1] + dp22 / 2.0);
+            double da23 = dt * a2(a1Array[i - 1] + da12 / 2.0 ,a2Array[i - 1] + da22 / 2.0, p1Array[i - 1] + dp12 / 2.0, p2Array[i - 1] + dp22 / 2.0);
+            double dp13 = dt * p1(a1Array[i - 1] + da12 / 2.0, a2Array[i - 1] + da22 / 2.0, p1Array[i - 1] + dp12 / 2.0, p2Array[i - 1] + dp22 / 2.0);
+            double dp23 = dt * p2(a1Array[i - 1] + da12 / 2.0, a2Array[i - 1] + dp22 / 2.0, p1Array[i - 1] + dp12 / 2.0, p2Array[i - 1] + dp22 / 2.0);
+
+            double da14 = dt * a1(a1Array[i - 1] + da13,       a2Array[i - 1] + da23,       p1Array[i - 1] + dp13,       p2Array[i - 1] + dp23);
+            double da24 = dt * a2(a1Array[i - 1] + da13,       a2Array[i - 1] + da23,       p1Array[i - 1] + dp13,       p2Array[i - 1] + dp23);
+            double dp14 = dt * p1(a1Array[i - 1] + da13,       a2Array[i - 1] + da23,       p1Array[i - 1] + dp13,       p2Array[i - 1] + dp23);
+            double dp24 = dt * p2(a1Array[i - 1] + da13,       a2Array[i - 1] + da23,       p1Array[i - 1] + dp13,       p2Array[i - 1] + dp23);
+
+            a1Array[i] = a1Array[i - 1] + (da11 + 2.0 * (da12 + da13) + da14) / 6.0;
+            a2Array[i] = a2Array[i - 1] + (da21 + 2.0 * (da22 + da23) + da24) / 6.0;
+            p1Array[i] = p1Array[i - 1] + (dp11 + 2.0 * (dp12 + dp13) + dp14) / 6.0;
             p2Array[i] = p2Array[i - 1] + (dp21 + 2.0 * (dp22 + dp23) + dp24) / 6.0;
         }
     }
