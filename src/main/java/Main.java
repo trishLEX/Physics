@@ -1,51 +1,41 @@
 import java.util.function.BiFunction;
-import java.util.function.Supplier;
 
 import static java.lang.Math.*;
 
 public class Main {
-    private static final double m1 = 0.1;
-    private static final double m2 = 0.1;
-    private static final double g = 9.8;
-    private static final double l1 = 0.2;
-    private static final double l2 = 0.2;
-    private static final double dt = 0.01;
-    private static final double a1 = PI / 2;
-    private static final double a2 = PI / 2;
-    private static final double p1 = 0;
-    private static final double p2 = 0;
+    private static final double M1 = 0.1;
+    private static final double M2 = 0.1;
+    private static final double G = 9.8;
+    private static final double L1 = 0.2;
+    private static final double L2 = 0.2;
+    private static final double dT = 0.01;
+    private static final double ALPHA1 = - PI / 2;
+    private static final double ALPHA2 = - PI / 6;
+    private static final double P1 = 0;
+    private static final double P2 = 0;
 
     public static void main(String[] args) {
         double[] tArray = new double[101];
 
         double[] a1Array = new double[101];
-        a1Array[0] = a1;
+        a1Array[0] = ALPHA1;
 
         double[] a2Array = new double[101];
-        a2Array[0] = a2;
+        a2Array[0] = ALPHA2;
 
         double[] p1Array = new double[101];
-        p1Array[0] = p1;
+        p1Array[0] = P1;
 
         double[] p2Array = new double[101];
-        p2Array[0] = p2;
+        p2Array[0] = P2;
 
-        //runge((t, y) -> t * sqrt(y), tArray, yArray, dt);
-        BiFunction<Double, Double, Double> a1Func = (t, a) -> (p1 * l2 - p2 * l1 * cos(a - a2)) / (l1 * l1 * l2 * (m1 + m2 * sin(a - a2) * sin(a - a2)));
-        BiFunction<Double, Double, Double> a2Func = (t, a) -> (p2 * (m1 + m2) * l1 - p1 * m2 * l2 * cos(a1 - a)) / (m2 * l1 * l2 * l2 * (m1 + m2 * sin(a1 - a) * sin(a1 - a)));
-        BiFunction<Double, Double, Double> p1Func = (t, p) -> -(m1 + m2) * g * l1 * sin(a1) - A1(a1, a2, p, p2) + A2(a1, a2, p, p2);
-        BiFunction<Double, Double, Double> p2Func = (t, p) -> - m2 * g * l2 * sin(a2) + A1(a1, a2, p1, p) - A2(a1, a2, p1, p);
-//        runge(a1Func, tArray, a1Array, dt);
-//        runge(a2Func, tArray, a2Array, dt);
-//        runge(p1Func, tArray, p1Array, dt);
-//        runge(p2Func, tArray, p2Array, dt);
-        commonRunge(tArray, dt, a1Array, a2Array, p1Array, p2Array);
+        commonRunge(tArray, dT, a1Array, a2Array, p1Array, p2Array);
 
         for (int i = 0; i < 101; i++) {
-            System.out.print(String.format("a1(t = %.2f) = %.2f   ", tArray[i], a1Array[i]));
-            System.out.print(String.format("a2(t = %.2f) = %.2f   ", tArray[i], a2Array[i]));
-            System.out.print(String.format("p1(t = %.2f) = %.2f   ", tArray[i], p1Array[i]));
-            System.out.print(String.format("p2(t = %.2f) = %.2f\n", tArray[i], p2Array[i]));
+            System.out.print(String.format("ALPHA1(t = %.2f) = %.2f   ", tArray[i], a1Array[i]));
+            System.out.print(String.format("ALPHA2(t = %.2f) = %.2f   ", tArray[i], a2Array[i]));
+            System.out.print(String.format("P1(t = %.2f) = %.2f   ", tArray[i], p1Array[i]));
+            System.out.print(String.format("P2(t = %.2f) = %.2f\n", tArray[i], p2Array[i]));
         }
 
         Drawer alpha1 = new Drawer("alpha1", tArray, a1Array, "t", "alpha1");
@@ -54,42 +44,42 @@ public class Main {
         Drawer alpha2 = new Drawer("alpha2", tArray, a2Array, "t", "alpha2");
         alpha2.draw();
 
-        Drawer p1 = new Drawer("p1", tArray, p1Array, "t", "p1");
+        Drawer p1 = new Drawer("P1", tArray, p1Array, "t", "P1");
         p1.draw();
 
-        Drawer p2 = new Drawer("p2", tArray, p2Array, "t", "p2");
+        Drawer p2 = new Drawer("P2", tArray, p2Array, "t", "P2");
         p2.draw();
 
-        Drawer pa1 = new Drawer("p1 and alpha1", p1Array, a1Array, "p1", "alpha1");
+        Drawer pa1 = new Drawer("P1 and alpha1", p1Array, a1Array, "P1", "alpha1");
         pa1.draw();
 
-        Drawer pa2 = new Drawer("p2 and alpha2", p2Array, a2Array, "p2", "alpha2");
+        Drawer pa2 = new Drawer("P2 and alpha2", p2Array, a2Array, "P2", "alpha2");
         pa2.draw();
     }
 
     private static double A1(double a1, double a2, double p1, double p2) {
-        return  p1 * p2 * sin(a1 - a2) / (l1 * l2 * (m1 + m2 * sin(a1 - a2) * sin(a1 - a2)));
+        return  p1 * p2 * sin(a1 - a2) / (L1 * L2 * (M1 + M2 * sin(a1 - a2) * sin(a1 - a2)));
     }
 
     private static double A2(double a1, double a2, double p1, double p2) {
-        return (p1 * p1 * m2 * l2 * l2 - 2 * p1 * p2 * m2 * l1 * l2 * cos(a1 - a2) + p2 * p2 * (m1 + m2) * l1 * l1) * sin(2 * a1 - 2 * a2) /
-                (2 * l1 * l1 * l2 * l2 * (m1 + m2 * sin(a1 - a2) * sin(a1 - a2)) * (m1 + m2 * sin(a1 - a2) * sin(a1 - a2)));
+        return (p1 * p1 * M2 * L2 * L2 - 2 * p1 * p2 * M2 * L1 * L2 * cos(a1 - a2) + p2 * p2 * (M1 + M2) * L1 * L1) * sin(2 * a1 - 2 * a2) /
+                (2 * L1 * L1 * L2 * L2 * (M1 + M2 * sin(a1 - a2) * sin(a1 - a2)) * (M1 + M2 * sin(a1 - a2) * sin(a1 - a2)));
     }
 
     private static double a1(double a1, double a2, double p1, double p2) {
-        return (p1 * l2 - p2 * l1 * cos(a1 - a2)) / (l1 * l1 * l2 * (m1 + m2 * sin(a1 - a2) * sin(a1 - a2)));
+        return (p1 * L2 - p2 * L1 * cos(a1 - a2)) / (L1 * L1 * L2 * (M1 + M2 * sin(a1 - a2) * sin(a1 - a2)));
     }
 
     private static double a2(double a1, double a2, double p1, double p2) {
-        return (p2 * (m1 + m2) * l1 - p1 * m2 * l2 * cos(a1 - a2)) / (m2 * l1 * l2 * l2 * (m1 + m2 * sin(a1 - a2) * sin(a1 - a2)));
+        return (p2 * (M1 + M2) * L1 - p1 * M2 * L2 * cos(a1 - a2)) / (M2 * L1 * L2 * L2 * (M1 + M2 * sin(a1 - a2) * sin(a1 - a2)));
     }
 
     private static double p1(double a1, double a2, double p1, double p2) {
-        return -(m1 + m2) * g * l1 * sin(a1) - A1(a1, a2, p1, p2) + A2(a1, a2, p1, p2);
+        return -(M1 + M2) * G * L1 * sin(a1) - A1(a1, a2, p1, p2) + A2(a1, a2, p1, p2);
     }
 
     private static double p2(double a1, double a2, double p1, double p2) {
-        return  - m2 * g * l2 * sin(a2) + A1(a1, a2, p1, p2) - A2(a1, a2, p1, p2);
+        return  -M2 * G * L2 * sin(a2) + A1(a1, a2, p1, p2) - A2(a1, a2, p1, p2);
     }
 
     private static void runge(BiFunction<Double, Double, Double> function, double[] t,
